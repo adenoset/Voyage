@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voyages - Explorateur</title>
+    <meta name="description"
+        content="Planifiez et explorez vos aventures de voyage avec un tableau de bord interactif.">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container-new">
+
+        <!-- LEFT COLUMN: Logo + KPI tiles -->
+        <aside class="kpi-sidebar">
+            <div class="kpi-sidebar-header">
+                <div class="logo-icon">
+                    <i data-lucide="layers"></i>
+                </div>
+                <h2>Voyages</h2>
+            </div>
+
+            <!-- KPI Cards stacked vertically -->
+            <div class="kpi-stack">
+                <div class="kpi-card active" id="kpi-btn-countries" data-kpi="countries">
+                    <div class="kpi-header">
+                        <h3>Pays</h3>
+                        <button class="icon-btn subtle"><i data-lucide="globe"></i></button>
+                    </div>
+                    <div class="kpi-value" id="kpi-countries">0</div>
+                    <div class="kpi-footer positive">
+                        <span class="trend"><i data-lucide="arrow-up"></i> Monde</span>
+                        <span class="trend-text">En expansion</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card" id="kpi-btn-regions" data-kpi="regions">
+                    <div class="kpi-header">
+                        <h3>Régions</h3>
+                        <button class="icon-btn subtle"><i data-lucide="map"></i></button>
+                    </div>
+                    <div class="kpi-value" id="kpi-regions">0</div>
+                    <div class="kpi-footer positive">
+                        <span class="trend"><i data-lucide="arrow-up"></i> 100%</span>
+                        <span class="trend-text">Vérifiées</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card" id="kpi-btn-cities" data-kpi="cities">
+                    <div class="kpi-header">
+                        <h3>Villes</h3>
+                        <button class="icon-btn subtle"><i data-lucide="building-2"></i></button>
+                    </div>
+                    <div class="kpi-value" id="kpi-cities">0</div>
+                    <div class="kpi-footer positive">
+                        <span class="trend"><i data-lucide="arrow-up"></i> +++</span>
+                        <span class="trend-text">Destinations</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card" id="kpi-btn-excursions" data-kpi="excursions">
+                    <div class="kpi-header">
+                        <h3>Excursions</h3>
+                        <button class="icon-btn subtle"><i data-lucide="camera"></i></button>
+                    </div>
+                    <div class="kpi-value" id="kpi-excursions">0</div>
+                    <div class="kpi-footer">
+                        <span class="trend-text status-text"
+                            style="color: var(--green-primary); font-weight: 500;">Prêtes à explorer</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT AREA: selectors + full-height map -->
+        <main class="map-main">
+
+            <!-- Selectors bar at the top -->
+            <section class="destination-selectors top-selectors">
+                <div class="selector-group">
+                    <label for="country-select">Pays</label>
+                    <div class="select-wrapper">
+                        <i data-lucide="map" class="select-icon"></i>
+                        <select id="country-select">
+                            <option value="">Sélectionnez un pays...</option>
+                            <option value="france">France</option>
+                            <option value="italy">Italie</option>
+                            <option value="spain">Espagne</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="chevron-icon"></i>
+                    </div>
+                </div>
+
+                <div class="selector-group">
+                    <label for="region-select">Région</label>
+                    <div class="select-wrapper">
+                        <i data-lucide="map-pin" class="select-icon"></i>
+                        <select id="region-select" disabled>
+                            <option value="">Sélectionnez d'abord un pays...</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="chevron-icon"></i>
+                    </div>
+                </div>
+
+                <div class="selector-group">
+                    <label for="city-select">Ville</label>
+                    <div class="select-wrapper">
+                        <i data-lucide="building" class="select-icon"></i>
+                        <select id="city-select" disabled>
+                            <option value="">Sélectionnez d'abord une région...</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="chevron-icon"></i>
+                    </div>
+                </div>
+
+                <div class="selector-group">
+                    <label for="excursion-select">Excursion</label>
+                    <div class="select-wrapper">
+                        <i data-lucide="camera" class="select-icon"></i>
+                        <select id="excursion-select" disabled>
+                            <option value="">Sélectionnez d'abord une ville...</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="chevron-icon"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Map fills the remaining height -->
+            <div class="map-fill">
+                <div id="excursion-map" style="display:none;"></div>
+                <div id="map-placeholder" style="display:flex;">
+                    <div>
+                        <i data-lucide="map" style="width:48px;height:48px;margin-bottom:16px;opacity:0.4;"></i>
+                        <p>Cliquez sur un pavé KPI ou sélectionnez une excursion pour afficher la carte</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Initialize Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
