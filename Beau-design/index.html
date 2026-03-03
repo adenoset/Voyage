@@ -34,6 +34,21 @@
                 <h2>Voyages</h2>
             </div>
 
+            <!-- Navigation Menu -->
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-target="exploration-view">
+                        <i data-lucide="map"></i>
+                        <span>Exploration</span>
+                    </li>
+
+                    <li class="nav-item" id="dark-mode-toggle">
+                        <i data-lucide="moon"></i>
+                        <span>Mode Sombre</span>
+                    </li>
+                </ul>
+            </nav>
+
             <!-- KPI Cards stacked vertically -->
             <div class="kpi-stack">
                 <div class="kpi-card active" id="kpi-btn-countries" data-kpi="countries">
@@ -89,66 +104,70 @@
         <!-- RIGHT AREA: selectors + full-height map -->
         <main class="map-main">
 
-            <!-- Selectors bar at the top -->
-            <section class="destination-selectors top-selectors">
-                <div class="selector-group">
-                    <label for="country-select">Pays</label>
-                    <div class="select-wrapper">
-                        <i data-lucide="map" class="select-icon"></i>
-                        <select id="country-select">
-                            <option value="">Sélectionnez un pays...</option>
-                            <option value="france">France</option>
-                            <option value="italy">Italie</option>
-                            <option value="spain">Espagne</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="chevron-icon"></i>
+            <!-- View 1: Exploration (Original) -->
+            <section id="exploration-view" class="view-section active">
+                <!-- Selectors bar at the top -->
+                <div class="destination-selectors top-selectors">
+                    <div class="selector-group">
+                        <label for="country-select">Pays</label>
+                        <div class="select-wrapper">
+                            <i data-lucide="map" class="select-icon"></i>
+                            <select id="country-select">
+                                <option value="">Sélectionnez un pays...</option>
+                                <option value="france">France</option>
+                                <option value="italy">Italie</option>
+                                <option value="spain">Espagne</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="chevron-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label for="region-select">Région</label>
+                        <div class="select-wrapper">
+                            <i data-lucide="map-pin" class="select-icon"></i>
+                            <select id="region-select" disabled>
+                                <option value="">Sélectionnez d'abord un pays...</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="chevron-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label for="city-select">Ville</label>
+                        <div class="select-wrapper">
+                            <i data-lucide="building" class="select-icon"></i>
+                            <select id="city-select" disabled>
+                                <option value="">Sélectionnez d'abord une région...</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="chevron-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="selector-group">
+                        <label for="excursion-select">Excursion</label>
+                        <div class="select-wrapper">
+                            <i data-lucide="camera" class="select-icon"></i>
+                            <select id="excursion-select" disabled>
+                                <option value="">Sélectionnez d'abord une ville...</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="chevron-icon"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div class="selector-group">
-                    <label for="region-select">Région</label>
-                    <div class="select-wrapper">
-                        <i data-lucide="map-pin" class="select-icon"></i>
-                        <select id="region-select" disabled>
-                            <option value="">Sélectionnez d'abord un pays...</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="chevron-icon"></i>
-                    </div>
-                </div>
-
-                <div class="selector-group">
-                    <label for="city-select">Ville</label>
-                    <div class="select-wrapper">
-                        <i data-lucide="building" class="select-icon"></i>
-                        <select id="city-select" disabled>
-                            <option value="">Sélectionnez d'abord une région...</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="chevron-icon"></i>
-                    </div>
-                </div>
-
-                <div class="selector-group">
-                    <label for="excursion-select">Excursion</label>
-                    <div class="select-wrapper">
-                        <i data-lucide="camera" class="select-icon"></i>
-                        <select id="excursion-select" disabled>
-                            <option value="">Sélectionnez d'abord une ville...</option>
-                        </select>
-                        <i data-lucide="chevron-down" class="chevron-icon"></i>
+                <!-- Map fills the remaining height -->
+                <div class="map-fill">
+                    <div id="excursion-map" style="display:none;"></div>
+                    <div id="map-placeholder" style="display:flex;">
+                        <div>
+                            <i data-lucide="map" style="width:48px;height:48px;margin-bottom:16px;opacity:0.4;"></i>
+                            <p>Cliquez sur un pavé KPI ou sélectionnez une excursion pour afficher la carte</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Map fills the remaining height -->
-            <div class="map-fill">
-                <div id="excursion-map" style="display:none;"></div>
-                <div id="map-placeholder" style="display:flex;">
-                    <div>
-                        <i data-lucide="map" style="width:48px;height:48px;margin-bottom:16px;opacity:0.4;"></i>
-                        <p>Cliquez sur un pavé KPI ou sélectionnez une excursion pour afficher la carte</p>
-                    </div>
-                </div>
-            </div>
         </main>
     </div>
 
@@ -156,7 +175,7 @@
     <script>
         lucide.createIcons();
     </script>
-    <script src="script.js"></script>
+    <script src="script.js" charset="utf-8"></script>
 </body>
 
 </html>

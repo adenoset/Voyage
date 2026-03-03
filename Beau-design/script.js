@@ -56,13 +56,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 1000);
 
-    // --- Navigation (Tabs) Logic ---
     const navItems = document.querySelectorAll('.nav-item');
     const viewSections = document.querySelectorAll('.view-section');
 
     if (navItems.length > 0) {
         navItems.forEach(item => {
             item.addEventListener('click', () => {
+                if (item.id === 'dark-mode-toggle') {
+                    const isDark = document.body.getAttribute('data-theme') === 'dark';
+                    if (isDark) {
+                        document.body.removeAttribute('data-theme');
+                    } else {
+                        document.body.setAttribute('data-theme', 'dark');
+                    }
+                    const icon = item.querySelector('i');
+                    icon.setAttribute('data-lucide', !isDark ? 'sun' : 'moon');
+                    item.querySelector('span').textContent = !isDark ? 'Mode Clair' : 'Mode Sombre';
+                    lucide.createIcons();
+                    return;
+                }
+
                 // Remove active from all nav items
                 navItems.forEach(nav => nav.classList.remove('active'));
                 // Add active to clicked nav item
@@ -71,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Hide all views
                 viewSections.forEach(view => {
                     view.classList.remove('active');
+                    view.style.display = 'none';
                 });
 
                 // Show targeted view
@@ -79,16 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const targetView = document.getElementById(targetId);
                     if (targetView) {
                         targetView.classList.add('active');
+                        targetView.style.display = 'flex';
                     }
 
-                    // Fix map rendering bug if dashboard view is re-opened
-                    if (targetId === 'dashboard-view' && map) {
+                    // Fix map rendering bug if exploration view is re-opened
+                    if (targetId === 'exploration-view' && map) {
                         setTimeout(() => { map.invalidateSize(); }, 300);
                     }
                 }
             });
         });
     }
+
 
     // --- Destination Selectors Logic ---
     const countrySelect = document.getElementById('country-select');
@@ -100,11 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dummy data for illustration (With coordinates)
     const destData = {
         'france': {
-            regions: ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Nouvelle-Aquitaine', 'Auvergne-Rhône-Alpes', 'Bretagne', 'Occitanie', 'Normandie', 'Grand Est'],
+            regions: ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Nouvelle-Aquitaine', 'Corrèze', 'Auvergne-Rhône-Alpes', 'Bretagne', 'Occitanie', 'Normandie', 'Grand Est'],
             cities: {
                 'Île-de-France': ['Paris', 'Versailles', 'Fontainebleau', 'Provins', 'Saint-Germain-en-Laye', 'Vincennes', 'Boulogne-Billancourt', 'Rueil-Malmaison', 'Melun', 'Saint-Denis'],
                 'Provence-Alpes-Côte d\'Azur': ['Nice', 'Marseille', 'Cannes', 'Aix-en-Provence', 'Grasse', 'Avignon', 'Arles', 'Toulon', 'Antibes', 'Saint-Tropez', 'Menton', 'Cassis'],
-                'Nouvelle-Aquitaine': ['Bordeaux', 'Biarritz', 'Saint-Émilion', 'Arcachon', 'La Rochelle', 'Pau', 'Bayonne', 'Limoges', 'Poitiers', 'Angoulême', 'Périgueux', 'Agen', 'Brive-la-Gaillarde'],
+                'Nouvelle-Aquitaine': ['Bordeaux', 'Biarritz', 'Saint-Émilion', 'Arcachon', 'La Rochelle', 'Pau', 'Bayonne', 'Limoges', 'Poitiers', 'Angoulême', 'Périgueux', 'Agen'],
+                'Corrèze': ['Brive-la-Gaillarde', 'Tulle', 'Uzerche'],
                 'Auvergne-Rhône-Alpes': ['Lyon', 'Annecy', 'Chamonix', 'Grenoble', 'Clermont-Ferrand', 'Valence', 'Chambéry', 'Saint-Étienne', 'Vichy', 'Montélimar', 'Vienne', 'Bourg-en-Bresse'],
                 'Bretagne': ['Rennes', 'Saint-Malo', 'Vannes', 'Brest', 'Quimper', 'Dinard', 'Lorient', 'Saint-Brieuc', 'Concarneau', 'Carnac', 'Lannion'],
                 'Occitanie': ['Toulouse', 'Montpellier', 'Carcassonne', 'Nîmes', 'Albi', 'Perpignan', 'Béziers', 'Narbonne', 'Tarbes', 'Lourdes', 'Cahors', 'Rodez'],
@@ -488,7 +505,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Angoulême': { 'Capitale de la BD': [[45.6521, 0.1504], [45.6496, 0.1558], [45.6517, 0.1517]] },
                 'Périgueux': { 'Vesunna': [[45.1843, 0.7208], [45.1869, 0.7163], [45.1818, 0.7126]] },
                 'Agen': { 'Pont-Canal': [[44.2049, 0.6186], [44.2005, 0.6135], [44.1950, 0.6050]] },
-                'Brive-la-Gaillarde': { 'Marché et Grottes': [[45.1583, 1.5330], [45.1565, 1.5298], [45.1480, 1.5200]] },
+                'Brive-la-Gaillarde': {
+                    'Marché Georges Brassens': [
+                        [45.1583, 1.5330], // Halle Georges Brassens
+                        [45.1590, 1.5315], // Collégiale Saint-Martin
+                        [45.1575, 1.5280]  // Centre historique
+                    ],
+                    'Grottes de Saint-Antoine': [
+                        [45.1565, 1.5298], // Entrée des grottes
+                        [45.1550, 1.5260], // Chapelle Saint-Antoine
+                        [45.1480, 1.5200]  // Belvédère
+                    ]
+                },
+                'Tulle': {
+                    'Cloître et Cathédrale': [
+                        [45.2678, 1.7690], // Cathédrale Notre-Dame
+                        [45.2670, 1.7675], // Cloître
+                        [45.2660, 1.7650]  // Quais de la Corrèze
+                    ]
+                },
+                'Uzerche': {
+                    'Perle du Limousin': [
+                        [45.4240, 1.5630], // Porte Bécharie
+                        [45.4250, 1.5645], // Église Saint-Pierre
+                        [45.4260, 1.5660]  // Belvédère de la Vézère
+                    ]
+                },
                 // --- NEW AUVERGNE-RHÔNE-ALPES ---
                 'Chambéry': { 'Ducs de Savoie': [[45.5663, 5.9221], [45.5654, 5.9189], [45.5610, 5.9200]] },
                 'Saint-Étienne': { 'Design et Mine': [[45.4397, 4.3872], [45.4365, 4.3905], [45.4261, 4.3989]] },
@@ -852,7 +894,7 @@ document.addEventListener('DOMContentLoaded', () => {
             map = L.map('excursion-map').setView([46.2276, 2.2137], 4);
 
             // Google Maps Satellite/Hybrid tiles
-            L.tileLayer('http://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
                 maxZoom: 20,
                 subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
                 attribution: '&copy; <a href="https://maps.google.com">Google Maps</a>'
@@ -899,7 +941,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create bounds to fit all points
         const bounds = L.latLngBounds(coordinates);
-        map.fitBounds(bounds, { padding: [50, 50] });
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
 
         // Add markers for start and end (or all waypoints)
         coordinates.forEach((coord, index) => {
@@ -1041,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
             markers.push(circle);
         });
 
-        map.fitBounds(bounds, { padding: [50, 50] });
+        map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
     }
 
     // Plot all cities of a given country
@@ -1076,7 +1118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .bindTooltip(p.label).addTo(map);
             markers.push(c);
         });
-        map.fitBounds(bounds, { padding: [40, 40] });
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
     }
 
     // Plot cities of a specific region
@@ -1110,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .bindTooltip(p.label).addTo(map);
             markers.push(c);
         });
-        map.fitBounds(bounds, { padding: [40, 40] });
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
     }
 
     // Plot excursion start points for a city
@@ -1139,7 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .bindTooltip(p.label).addTo(map);
             markers.push(c);
         });
-        map.fitBounds(bounds, { padding: [40, 40] });
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
     }
 
     const kpiCards = document.querySelectorAll('.kpi-card');
