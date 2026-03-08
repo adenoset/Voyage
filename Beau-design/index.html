@@ -19,7 +19,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
@@ -108,6 +108,22 @@
             <section id="exploration-view" class="view-section active">
                 <!-- Selectors bar at the top -->
                 <div class="destination-selectors top-selectors">
+                    
+                    <!-- Search by City Input -->
+                    <div class="selector-group search-group" style="flex: 1 1 100%; margin-bottom: 1rem; display: flex; gap: 8px; align-items: flex-end;">
+                        <div style="flex-grow: 1;">
+                            <label for="city-search">Recherche de proximité</label>
+                            <div class="select-wrapper text-input-wrapper">
+                                <i data-lucide="search" class="select-icon"></i>
+                                <input type="text" id="city-search" placeholder="Ex: Lignan, Marmande, Paris..." style="width: 100%; border: none; background: transparent; padding: 0.75rem 0.75rem 0.75rem 2.5rem; color: inherit; font-family: inherit; font-size: 0.95rem; outline: none;">
+                            </div>
+                        </div>
+                        <button id="btn-search-city" class="btn-primary" style="height: 48px; border-radius: 8px; border: none; background: var(--green-primary); color: white; padding: 0 1.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: background 0.2s;">
+                            <i data-lucide="target" style="width: 18px; height: 18px;"></i>
+                            Trouver
+                        </button>
+                    </div>
+
                     <div class="selector-group">
                         <label for="country-select">Pays</label>
                         <div class="select-wrapper">
@@ -117,6 +133,13 @@
                                 <option value="france">France</option>
                                 <option value="italy">Italie</option>
                                 <option value="spain">Espagne</option>
+                                <option value="germany">Allemagne</option>
+                                <option value="portugal">Portugal</option>
+                                <option value="uk">Royaume-Uni</option>
+                                <option value="switzerland">Suisse</option>
+                                <option value="greece">Grèce</option>
+                                <option value="usa">États-Unis</option>
+                                <option value="japan">Japon</option>
                             </select>
                             <i data-lucide="chevron-down" class="chevron-icon"></i>
                         </div>
@@ -157,7 +180,27 @@
                 </div>
 
                 <!-- Map fills the remaining height -->
-                <div class="map-fill">
+                <div class="map-fill" style="position: relative;">
+                    <!-- Floating Google Maps Buttons -->
+                    <div style="position:absolute; top: 16px; right: 16px; z-index: 1000; display: flex; flex-direction: column; gap: 8px;">
+                        <a id="btn-open-gmaps" href="#" target="_blank" class="btn-primary" style="display:none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 30px; padding: 10px 20px; font-weight: 600; background-color: #4285F4; color: white; text-decoration: none; align-items: center; gap: 8px; transition: opacity 0.2s;">
+                            <i data-lucide="map" style="width: 18px; height: 18px;"></i>
+                            Itinéraire (Google Maps)
+                        </a>
+                        <a id="btn-nearby-attractions" href="#" target="_blank" class="btn-primary" style="display:none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 30px; padding: 10px 20px; font-weight: 600; background-color: #fbbc05; color: #1a1200; text-decoration: none; align-items: center; gap: 8px; transition: opacity 0.2s;">
+                            <i data-lucide="compass" style="width: 18px; height: 18px;"></i>
+                            Sites touristiques
+                        </a>
+                        <a id="btn-nearby-restaurants" href="#" target="_blank" class="btn-primary" style="display:none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 30px; padding: 10px 20px; font-weight: 600; background-color: #e94235; color: white; text-decoration: none; align-items: center; gap: 8px; transition: opacity 0.2s;">
+                            <i data-lucide="utensils" style="width: 18px; height: 18px;"></i>
+                            Restaurants gastronomiques
+                        </a>
+                        <a id="btn-nearby-hikes" href="#" target="_blank" class="btn-primary" style="display:none; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border-radius: 30px; padding: 10px 20px; font-weight: 600; background-color: #34a853; color: white; text-decoration: none; align-items: center; gap: 8px; transition: opacity 0.2s;">
+                            <i data-lucide="footprints" style="width: 18px; height: 18px;"></i>
+                            Randonnées nature faciles
+                        </a>
+                    </div>
+                    
                     <div id="excursion-map" style="display:none;"></div>
                     <div id="map-placeholder" style="display:flex;">
                         <div>
@@ -175,7 +218,7 @@
     <script>
         lucide.createIcons();
     </script>
-    <script src="script.js" charset="utf-8"></script>
+    <script src="script.js?v=8" charset="utf-8"></script>
 </body>
 
 </html>

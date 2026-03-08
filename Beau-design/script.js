@@ -116,17 +116,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dummy data for illustration (With coordinates)
     const destData = {
         'france': {
-            regions: ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Nouvelle-Aquitaine', 'Corrèze', 'Auvergne-Rhône-Alpes', 'Bretagne', 'Occitanie', 'Normandie', 'Grand Est'],
+            regions: ['Île-de-France', 'Provence-Alpes-Côte d\'Azur', 'Nouvelle-Aquitaine', 'Corrèze', 'Auvergne-Rhône-Alpes', 'Bretagne', 'Occitanie', 'Normandie', 'Grand Est', 'Hauts-de-France', 'Bourgogne-Franche-Comté', 'Pays de la Loire', 'Centre-Val de Loire', 'Corse'],
             cities: {
                 'Île-de-France': ['Paris', 'Versailles', 'Fontainebleau', 'Provins', 'Saint-Germain-en-Laye', 'Vincennes', 'Boulogne-Billancourt', 'Rueil-Malmaison', 'Melun', 'Saint-Denis'],
-                'Provence-Alpes-Côte d\'Azur': ['Nice', 'Marseille', 'Cannes', 'Aix-en-Provence', 'Grasse', 'Avignon', 'Arles', 'Toulon', 'Antibes', 'Saint-Tropez', 'Menton', 'Cassis'],
-                'Nouvelle-Aquitaine': ['Bordeaux', 'Biarritz', 'Saint-Émilion', 'Arcachon', 'La Rochelle', 'Pau', 'Bayonne', 'Limoges', 'Poitiers', 'Angoulême', 'Périgueux', 'Agen'],
+                'Provence-Alpes-Côte d\'Azur': ['Nice', 'Marseille', 'Cannes', 'Aix-en-Provence', 'Grasse', 'Avignon', 'Arles', 'Toulon', 'Antibes', 'Saint-Tropez', 'Menton', 'Cassis', 'Gordes', 'Les Baux-de-Provence'],
+                'Nouvelle-Aquitaine': ['Bordeaux', 'Biarritz', 'Saint-Émilion', 'Arcachon', 'La Rochelle', 'Pau', 'Bayonne', 'Limoges', 'Poitiers', 'Angoulême', 'Périgueux', 'Agen', 'Sarlat-la-Canéda', 'Montignac-Lascaux'],
                 'Corrèze': ['Brive-la-Gaillarde', 'Tulle', 'Uzerche'],
                 'Auvergne-Rhône-Alpes': ['Lyon', 'Annecy', 'Chamonix', 'Grenoble', 'Clermont-Ferrand', 'Valence', 'Chambéry', 'Saint-Étienne', 'Vichy', 'Montélimar', 'Vienne', 'Bourg-en-Bresse'],
                 'Bretagne': ['Rennes', 'Saint-Malo', 'Vannes', 'Brest', 'Quimper', 'Dinard', 'Lorient', 'Saint-Brieuc', 'Concarneau', 'Carnac', 'Lannion'],
-                'Occitanie': ['Toulouse', 'Montpellier', 'Carcassonne', 'Nîmes', 'Albi', 'Perpignan', 'Béziers', 'Narbonne', 'Tarbes', 'Lourdes', 'Cahors', 'Rodez'],
-                'Normandie': ['Rouen', 'Caen', 'Le Havre', 'Honfleur', 'Deauville', 'Dieppe', 'Cherbourg', 'Bayeux', 'Étretat', 'Lisieux', 'Évreux', 'Alençon'],
-                'Grand Est': ['Strasbourg', 'Colmar', 'Reims', 'Nancy', 'Metz', 'Mulhouse', 'Troyes', 'Châlons-en-Champagne', 'Épinal', 'Thionville', 'Charleville-Mézières']
+                'Occitanie': ['Toulouse', 'Montpellier', 'Carcassonne', 'Nîmes', 'Albi', 'Perpignan', 'Béziers', 'Narbonne', 'Tarbes', 'Lourdes', 'Cahors', 'Rodez', 'Rocamadour', 'Padirac'],
+                'Normandie': ['Rouen', 'Caen', 'Le Havre', 'Honfleur', 'Deauville', 'Dieppe', 'Cherbourg', 'Bayeux', 'Étretat', 'Lisieux', 'Évreux', 'Alençon', 'Le Mont-Saint-Michel'],
+                'Grand Est': ['Strasbourg', 'Colmar', 'Reims', 'Nancy', 'Metz', 'Mulhouse', 'Troyes', 'Châlons-en-Champagne', 'Épinal', 'Thionville', 'Charleville-Mézières'],
+                'Hauts-de-France': ['Lille', 'Amiens'],
+                'Bourgogne-Franche-Comté': ['Dijon'],
+                'Pays de la Loire': ['Nantes'],
+                'Centre-Val de Loire': ['Chambord', 'Chenonceaux'],
+                'Corse': ['Bonifacio', 'Porto-Vecchio']
             },
             excursions: {
                 'Paris': {
@@ -566,7 +571,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Châlons-en-Champagne': { 'Balade en Barque': [[48.9560, 4.3640], [48.9555, 4.3615], [48.9540, 4.3590]] },
                 'Épinal': { 'Cité de l\'Image': [[48.1735, 6.4500], [48.1750, 6.4515], [48.1800, 6.4540]] },
                 'Thionville': { 'Trois Frontières': [[49.3590, 6.1660], [49.3580, 6.1645], [49.3550, 6.1600]] },
-                'Charleville-Mézières': { 'Place Ducale': [[49.7735, 4.7198], [49.7720, 4.7205], [49.7680, 4.7220]] }
+                'Charleville-Mézières': { 'Place Ducale': [[49.7735, 4.7198], [49.7720, 4.7205], [49.7680, 4.7220]] },
+                // --- NEW GRAND EST ---
+                'Strasbourg': { 'Visite de la Grande Île et de la cathédrale': [[48.5846, 7.7507], [48.5866, 7.7537], [48.5896, 7.7497]] }, 
+                'Reims': { 'Cathédrale Notre-Dame': [[49.2578, 4.0319], [49.2598, 4.0349], [49.2628, 4.0309]] }, 
+                // --- NEW HAUTS-DE-FRANCE ---
+                'Lille': { 'Architecture du Vieux-Lille': [[50.6366, 3.0635], [50.6386, 3.0665], [50.6416, 3.0625]] }, 
+                'Amiens': { "Cathédrale d'Amiens": [[49.8942, 2.2957], [49.8962, 2.2987], [49.8992, 2.2947]] }, 
+                // --- NEW BOURGOGNE-FRANCHE-COMTÉ ---
+                'Dijon': { 'Palais des ducs de Bourgogne': [[47.3216, 5.0415], [47.3236, 5.0445], [47.3266, 5.0405]] }, 
+                // --- NEW PAYS DE LA LOIRE ---
+                'Nantes': { "Les Machines de l'île": [[47.2186, -1.5541], [47.2206, -1.5511], [47.2236, -1.5551]] }, 
+                // --- NEW NORMANDIE ---
+                'Rouen': { 'Centre historique Gros-Horloge': [[49.4405, 1.094], [49.4425, 1.097], [49.4455, 1.093]] },
+                // --- SITES HISTORIQUES REMARQUABLES ---
+                'Sarlat-la-Canéda': { 'Cité Médiévale et Marché': [[44.8879, 1.2161], [44.8899, 1.2191], [44.8929, 1.2151]] }, 
+                'Montignac-Lascaux': { 'Grotte de Lascaux': [[45.0650, 1.1670], [45.0670, 1.1700], [45.0700, 1.1660]] }, 
+                'Rocamadour': { 'Cité Religieuse Perchée': [[44.7995, 1.6182], [44.8015, 1.6212], [44.8045, 1.6172]] }, 
+                'Padirac': { 'Gouffre de Padirac': [[44.8419, 1.753], [44.8439, 1.756], [44.8469, 1.752]] }, 
+                'Le Mont-Saint-Michel': { 'Abbaye et Baie': [[48.6355, -1.5103], [48.6375, -1.5073], [48.6405, -1.5113]] }, 
+                'Chambord': { 'Château de Chambord': [[47.6160, 1.5170], [47.6180, 1.5200], [47.6210, 1.5160]] }, 
+                'Chenonceaux': { 'Château de Chenonceau': [[47.332, 1.0704], [47.334, 1.0734], [47.337, 1.0694]] }, 
+                'Gordes': { 'Village perché et Abbaye de Sénanque': [[43.9111, 5.2002], [43.9131, 5.2032], [43.9161, 5.1992]] }, 
+                'Les Baux-de-Provence': { 'Citadelle et Carrières de Lumières': [[43.7436, 4.795], [43.7456, 4.798], [43.7486, 4.794]] }, 
+                'Bonifacio': { 'Falaises et Citadelle': [[41.3878, 9.1606], [41.3898, 9.1636], [41.3928, 9.1596]] }, 
+                'Porto-Vecchio': { 'Plage de Palombaggia et Golfe': [[41.5911, 9.2794], [41.5931, 9.2824], [41.5961, 9.2784]] }
             }
         },
         'italy': {
@@ -849,6 +878,176 @@ document.addEventListener('DOMContentLoaded', () => {
                 // La Rioja
                 'Calahorra': { 'Cathédrale et Musée de la Romanisation': [[42.3040, -1.9680], [42.3060, -1.9700], [42.3080, -1.9730]] }
             }
+        },
+        'germany': {
+            regions: ['Bavière', 'Berlin', 'Bade-Wurtemberg', 'Rhénanie-du-Nord-Westphalie', 'Saxe', 'Hesse', 'Hambourg'],
+            cities: {
+                'Bavière': ['Munich', 'Nuremberg', 'Augsbourg', 'Ratisbonne', 'Wurtzbourg'],
+                'Berlin': ['Berlin', 'Potsdam'],
+                'Bade-Wurtemberg': ['Stuttgart', 'Heidelberg', 'Fribourg-en-Brisgau', 'Baden-Baden', 'Karlsruhe'],
+                'Rhénanie-du-Nord-Westphalie': ['Cologne', 'Düsseldorf', 'Dortmund', 'Bonn', 'Aix-la-Chapelle'],
+                'Saxe': ['Dresde', 'Leipzig', 'Chemnitz'],
+                'Hesse': ['Francfort', 'Wiesbaden', 'Darmstadt'],
+                'Hambourg': ['Hambourg', 'Lübeck', 'Bremen']
+            },
+            excursions: {
+                'Munich': { 'Marienplatz et Bords de l\'Isar': [[48.1371, 11.5754], [48.1390, 11.5780], [48.1410, 11.5800]] },
+                'Nuremberg': { 'Château Impérial': [[49.4580, 11.0770], [49.4590, 11.0790], [49.4610, 11.0820]] },
+                'Berlin': { 'Porte de Brandebourg au Mur': [[52.5163, 13.3777], [52.5180, 13.3800], [52.5200, 13.3850]] },
+                'Stuttgart': { 'Parcs et Musées': [[48.7830, 9.1830], [48.7850, 9.1850], [48.7870, 9.1880]] },
+                'Heidelberg': { 'Château et Pont Ancien': [[49.4100, 8.7150], [49.4120, 8.7180], [49.4140, 8.7200]] },
+                'Cologne': { 'Cathédrale et Rhin': [[50.9413, 6.9583], [50.9430, 6.9600], [50.9450, 6.9630]] },
+                'Francfort': { 'Römerberg et Main': [[50.1105, 8.6821], [50.1120, 8.6850], [50.1150, 8.6880]] },
+                'Hambourg': { 'Speicherstadt et Port': [[53.5430, 9.9880], [53.5450, 9.9900], [53.5480, 9.9930]] }
+            }
+        },
+        'portugal': {
+            regions: ['Lisbonne', 'Porto et Nord', 'Algarve', 'Centre', 'Alentejo', 'Madère', 'Açores'],
+            cities: {
+                'Lisbonne': ['Lisbonne', 'Sintra', 'Cascais', 'Estoril', 'Setúbal'],
+                'Porto et Nord': ['Porto', 'Braga', 'Guimarães', 'Vallée du Douro', 'Viana do Castelo', 'Amarante'],
+                'Algarve': ['Faro', 'Lagos', 'Albufeira', 'Tavira', 'Portimão', 'Sagres'],
+                'Centre': ['Coimbra', 'Aveiro', 'Óbidos', 'Nazaré', 'Fátima', 'Tomar', 'Batalha'],
+                'Alentejo': ['Évora', 'Beja', 'Elvas', 'Monsaraz', 'Mértola'],
+                'Madère': ['Funchal', 'Machico', 'Câmara de Lobos'],
+                'Açores': ['Ponta Delgada', 'Angra do Heroísmo', 'Horta']
+            },
+            excursions: {
+                'Lisbonne': { 'Alfama et Belém': [[38.7130, -9.1330], [38.7150, -9.1300], [38.7180, -9.1280]] },
+                'Sintra': { 'Palais de Pena': [[38.7870, -9.3900], [38.7900, -9.3930], [38.7920, -9.3960]] },
+                'Porto': { 'Ribeira et Caves de Porto': [[41.1400, -8.6130], [41.1380, -8.6100], [41.1350, -8.6080]] },
+                'Faro': { 'Vieille Ville et Ria Formosa': [[37.0160, -7.9350], [37.0140, -7.9320], [37.0120, -7.9300]] },
+                'Coimbra': { 'Université de Coimbra': [[40.2070, -8.4260], [40.2090, -8.4280], [40.2110, -8.4300]] },
+                'Évora': { 'Temple Romain et Chapelle': [[38.5720, -7.9070], [38.5740, -7.9050], [38.5760, -7.9030]] },
+                'Funchal': { 'Jardins Botaniques': [[32.6500, -16.9080], [32.6520, -16.9050], [32.6540, -16.9030]] },
+                'Ponta Delgada': { 'Lacs Sete Cidades': [[37.7400, -25.6600], [37.7420, -25.6620], [37.7450, -25.6650]] }
+            }
+        },
+        'uk': {
+            regions: ['Angleterre', 'Écosse', 'Pays de Galles', 'Irlande du Nord'],
+            cities: {
+                'Angleterre': ['Londres', 'Bath', 'Oxford', 'Cambridge', 'Manchester', 'Liverpool', 'York', 'Brighton', 'Bristol', 'Newcastle', 'Nottingham'],
+                'Écosse': ['Édimbourg', 'Glasgow', 'Inverness', 'Île de Skye', 'Aberdeen', 'Dundee', 'Glencoe', 'St Andrews'],
+                'Pays de Galles': ['Cardiff', 'Conwy', 'Swansea', 'Tenby', 'Caernarfon', 'Llandudno'],
+                'Irlande du Nord': ['Belfast', 'Londonderry', 'Chaussée des Géants', 'Bushmills']
+            },
+            excursions: {
+                'Londres': { 'Westminster, Tamise et Tower Bridge': [[51.5007, -0.1246], [51.5030, -0.1220], [51.5050, -0.1200]] },
+                'Bath': { 'Bains Romains et Royal Crescent': [[51.3810, -2.3590], [51.3830, -2.3620], [51.3850, -2.3650]] },
+                'Oxford': { 'Université et Collèges': [[51.7520, -1.2570], [51.7540, -1.2590], [51.7560, -1.2620]] },
+                'Édimbourg': { 'Royal Mile au Château': [[55.9480, -3.1900], [55.9490, -3.1950], [55.9520, -3.1980]] },
+                'Glasgow': { 'Architecture Mackintosh': [[55.8640, -4.2510], [55.8660, -4.2530], [55.8680, -4.2560]] },
+                'Cardiff': { 'Château et Baie de Cardiff': [[51.4810, -3.1810], [51.4800, -3.1780], [51.4780, -3.1750]] },
+                'Belfast': { 'Titanic Quartier': [[54.6080, -5.9080], [54.6100, -5.9050], [54.6120, -5.9020]] },
+                'Chaussée des Géants': { 'Côte des Géants': [[55.2400, -6.5110], [55.2420, -6.5130], [55.2440, -6.5150]] }
+            }
+        },
+        'switzerland': {
+            regions: ['Canton de Genève', 'Canton de Vaud', 'Canton du Valais', 'Canton de Berne', 'Canton de Zurich', 'Canton de Lucerne', 'Canton du Tessin', 'Canton de Neuchâtel', 'Canton de Fribourg', 'Canton des Grisons'],
+            cities: {
+                'Canton de Genève': ['Genève', 'Carouge', 'Hermance'],
+                'Canton de Vaud': ['Lausanne', 'Montreux', 'Vevey', 'Nyon', 'Yverdon-les-Bains'],
+                'Canton du Valais': ['Zermatt', 'Sion', 'Martigny', 'Crans-Montana', 'Verbier', 'Saas-Fee'],
+                'Canton de Berne': ['Berne', 'Interlaken', 'Thoune', 'Gstaad', 'Grindelwald', 'Brienz'],
+                'Canton de Zurich': ['Zurich', 'Winterthour'],
+                'Canton de Lucerne': ['Lucerne', 'Weggis'],
+                'Canton du Tessin': ['Lugano', 'Locarno', 'Ascona', 'Bellinzone'],
+                'Canton de Neuchâtel': ['Neuchâtel', 'La Chaux-de-Fonds'],
+                'Canton de Fribourg': ['Fribourg', 'Gruyères'],
+                'Canton des Grisons': ['Saint-Moritz', 'Coire', 'Davos', 'Arosa']
+            },
+            excursions: {
+                'Genève': { 'Lac Léman et Vieille Ville': [[46.2040, 6.1430], [46.2060, 6.1460], [46.2080, 6.1490]] },
+                'Lausanne': { 'Ouchy et Cathédrale': [[46.5080, 6.6280], [46.5100, 6.6310], [46.5120, 6.6340]] },
+                'Montreux': { 'Château de Chillon': [[46.4140, 6.9270], [46.4160, 6.9290], [46.4180, 6.9320]] },
+                'Zermatt': { 'Gornergrat et Cervin': [[46.0200, 7.7490], [46.0180, 7.7470], [46.0160, 7.7450]] },
+                'Berne': { 'Cité Zähringen et Fosses aux Ours': [[46.9480, 7.4470], [46.9490, 7.4500], [46.9510, 7.4530]] },
+                'Interlaken': { 'Jungfraujoch': [[46.6860, 7.8630], [46.6880, 7.8650], [46.6900, 7.8680]] },
+                'Zurich': { 'Limmat et Lac': [[47.3760, 8.5410], [47.3780, 8.5440], [47.3800, 8.5470]] },
+                'Lucerne': { 'Pont de la Chapelle': [[47.0500, 8.3090], [47.0520, 8.3120], [47.0540, 8.3150]] },
+                'Lugano': { 'Lac de Lugano et Monte Brè': [[46.0030, 8.9510], [46.0050, 8.9540], [46.0070, 8.9570]] }
+            }
+        },
+        'greece': {
+            regions: ['Attique', 'Macédoine Centrale', 'Crète', 'Îles Ioniennes', 'Cyclades', 'Péloponnèse', 'Thessalie', 'Épire', 'Dodécanèse'],
+            cities: {
+                'Attique': ['Athènes', 'Le Pirée', 'Cap Sounion', 'Égine'],
+                'Macédoine Centrale': ['Thessalonique', 'Kavala', 'Vergina'],
+                'Crète': ['Héraklion', 'La Canée (Chania)', 'Réthymnon', 'Agios Nikolaos', 'Elounda', 'Matala'],
+                'Îles Ioniennes': ['Corfou', 'Zante', 'Céphalonie', 'Ithaque'],
+                'Cyclades': ['Santorin', 'Mykonos', 'Naxos', 'Paros', 'Milos', 'Amorgos'],
+                'Péloponnèse': ['Nauplie', 'Sparte', 'Olympie', 'Mycènes', 'Epidaure', 'Monemvasia', 'Mystras'],
+                'Thessalie': ['Météores', 'Volos'],
+                'Épire': ['Ioannina', 'Parga', 'Metsovo'],
+                'Dodécanèse': ['Rhodes', 'Kos', 'Patmos', 'Symi']
+            },
+            excursions: {
+                'Athènes': { 'Acropole, Plaka et Agora': [[37.9710, 23.7260], [37.9730, 23.7280], [37.9750, 23.7310]] },
+                'Thessalonique': { 'Tour Blanche et Front de Mer': [[40.6260, 22.9480], [40.6280, 22.9510], [40.6300, 22.9540]] },
+                'Héraklion': { 'Palais de Cnossos et Musée Archéologique': [[35.2980, 25.1620], [35.2960, 25.1640], [35.2940, 25.1660]] },
+                'La Canée (Chania)': { 'Vieux Port Vénitien': [[35.5160, 24.0180], [35.5180, 24.0200], [35.5200, 24.0220]] },
+                'Corfou': { 'Vieille Ville et Palais Achilleion': [[39.6230, 19.9220], [39.6250, 19.9250], [39.6270, 19.9280]] },
+                'Santorin': { 'Oia, Fira et Caldeira': [[36.4610, 25.3750], [36.4630, 25.3780], [36.4650, 25.3810]] },
+                'Mykonos': { 'Petite Venise et Moulins': [[37.4460, 25.3280], [37.4480, 25.3300], [37.4500, 25.3320]] },
+                'Olympie': { 'Site Archéologique': [[37.6380, 21.6250], [37.6400, 21.6280], [37.6420, 21.6310]] },
+                'Météores': { 'Monastères Perchés': [[39.7120, 21.6270], [39.7140, 21.6300], [39.7160, 21.6330]] },
+                'Rhodes': { 'Ville Médiévale et Lindos': [[36.4440, 28.2260], [36.4460, 28.2280], [36.4480, 28.2310]] }
+            }
+        },
+        'usa': {
+            regions: ['Californie', 'New York', 'Floride', 'Texas', 'Illinois', 'Nevada', 'Hawaï', 'Washington', 'Massachusetts', 'Louisiane', 'Colorado', 'Arizona'],
+            cities: {
+                'Californie': ['Los Angeles', 'San Francisco', 'San Diego', 'Santa Barbara', 'Sacramento', 'Palm Springs', 'Monterey'],
+                'New York': ['New York City', 'Buffalo', 'Albany'],
+                'Floride': ['Miami', 'Orlando', 'Key West', 'Tampa', 'Fort Lauderdale', 'St Augustine'],
+                'Texas': ['Austin', 'Dallas', 'Houston', 'San Antonio', 'El Paso'],
+                'Illinois': ['Chicago', 'Springfield'],
+                'Nevada': ['Las Vegas', 'Reno'],
+                'Hawaï': ['Honolulu', 'Maui', 'Hilo', 'Kailua-Kona'],
+                'Washington': ['Seattle', 'Tacoma'],
+                'Massachusetts': ['Boston', 'Cambridge', 'Salem'],
+                'Louisiane': ['La Nouvelle-Orléans', 'Bâton-Rouge'],
+                'Colorado': ['Denver', 'Boulder', 'Aspen'],
+                'Arizona': ['Phoenix', 'Tucson', 'Sedona', 'Grand Canyon Village']
+            },
+            excursions: {
+                'New York City': { 'Central Park à Times Square': [[40.7820, -73.9660], [40.7680, -73.9810], [40.7580, -73.9850]] },
+                'Los Angeles': { 'Hollywood Blvd & Observatoire Griffith': [[34.1010, -118.3260], [34.1100, -118.3120], [34.1180, -118.3000]] },
+                'San Francisco': { 'Golden Gate & Alcatraz': [[37.8190, -122.4780], [37.8260, -122.4200], [37.8080, -122.4090]] },
+                'Miami': { 'South Beach Art Deco': [[25.7900, -80.1300], [25.7800, -80.1320], [25.7700, -80.1340]] },
+                'Chicago': { 'Millennium Park et Architecture': [[41.8820, -87.6220], [41.8840, -87.6240], [41.8860, -87.6260]] },
+                'Las Vegas': { 'Le Strip et Fontaines du Bellagio': [[36.1140, -115.1720], [36.1080, -115.1740], [36.1020, -115.1760]] },
+                'Honolulu': { 'Waikiki et Diamond Head': [[21.2760, -157.8220], [21.2680, -157.8120], [21.2600, -157.8020]] },
+                'Boston': { 'Freedom Trail': [[42.3580, -71.0580], [42.3600, -71.0550], [42.3620, -71.0520]] },
+                'La Nouvelle-Orléans': { 'Vieux Carré (French Quarter)': [[29.9540, -90.0650], [29.9560, -90.0620], [29.9580, -90.0590]] },
+                'Grand Canyon Village': { 'Rive Sud du Grand Canyon': [[36.0540, -112.1380], [36.0560, -112.1350], [36.0580, -112.1320]] }
+            }
+        },
+        'japan': {
+            regions: ['Kanto', 'Kansai', 'Hokkaido', 'Kyushu', 'Chubu', 'Chugoku', 'Shikoku', 'Tohoku', 'Okinawa'],
+            cities: {
+                'Kanto': ['Tokyo', 'Yokohama', 'Kamakura', 'Nikko', 'Hakone'],
+                'Kansai': ['Kyoto', 'Osaka', 'Nara', 'Kobe', 'Himeji', 'Uji', 'Wakayama', 'Koyasan'],
+                'Hokkaido': ['Sapporo', 'Otaru', 'Hakodate', 'Asahikawa', 'Furano'],
+                'Kyushu': ['Fukuoka', 'Nagasaki', 'Beppu', 'Kumamoto', 'Kagoshima', 'Miyazaki'],
+                'Chubu': ['Nagoya', 'Kanazawa', 'Takayama', 'Shirakawa-go', 'Matsumoto', 'Mont Fuji (Kawaguchiko)'],
+                'Chugoku': ['Hiroshima', 'Miyajima', 'Okayama', 'Kurashiki', 'Matsue', 'Tottori'],
+                'Shikoku': ['Takamatsu', 'Matsuyama', 'Kochi', 'Tokushima'],
+                'Tohoku': ['Sendai', 'Aomori', 'Morioka', 'Akita', 'Yamagata'],
+                'Okinawa': ['Naha', 'Miyakojima', 'Ishigaki']
+            },
+            excursions: {
+                'Tokyo': { 'Shibuya, Harajuku et Meiji-jingu': [[35.6590, 139.7000], [35.6690, 139.6990], [35.6760, 139.6990]] },
+                'Kyoto': { 'Kinkaku-ji, Ryoan-ji et Arashiyama': [[35.0390, 135.7290], [35.0340, 135.7180], [35.0310, 135.7120]] },
+                'Osaka': { 'Dotonbori et Château d\'Osaka': [[34.6680, 135.5010], [34.6780, 135.5180], [34.6870, 135.5260]] },
+                'Nara': { 'Parc de Nara et Todai-ji': [[34.6850, 135.8390], [34.6870, 135.8420], [34.6890, 135.8450]] },
+                'Hiroshima': { 'Parc de la Paix et Dôme de Genbaku': [[34.3940, 132.4530], [34.3960, 132.4550], [34.3980, 132.4570]] },
+                'Miyajima': { 'Sanctuaire Itsukushima et Torii Flottant': [[34.2950, 132.3190], [34.2970, 132.3210], [34.2990, 132.3230]] },
+                'Sapporo': { 'Parc Odori et Tour de l\'Horloge': [[43.0610, 141.3540], [43.0630, 141.3570], [43.0650, 141.3600]] },
+                'Kanazawa': { 'Jardin Kenroku-en et Quartier Higashi Chaya': [[36.5610, 136.6620], [36.5630, 136.6650], [36.5650, 136.6680]] },
+                'Takayama': { 'Cité Historique Sanmachi Suji': [[36.1400, 137.2580], [36.1420, 137.2600], [36.1440, 137.2620]] },
+                'Himeji': { 'Le Château du Héron Blanc': [[34.8390, 134.6930], [34.8410, 134.6950], [34.8430, 134.6980]] }
+            }
         }
     };
 
@@ -910,6 +1109,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawRoute(coordinates) {
         if (!map) return;
+        
+        const gmapsBtn = document.getElementById('btn-open-gmaps');
+        const nearbyBtn = document.getElementById('btn-nearby-attractions');
+        const restoBtn = document.getElementById('btn-nearby-restaurants');
+        const hikeBtn = document.getElementById('btn-nearby-hikes');
 
         // Clear previous layers
         if (polyline) map.removeLayer(polyline);
@@ -919,7 +1123,57 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!coordinates || coordinates.length === 0) {
             mapContainer.style.display = 'none';
             mapPlaceholder.style.display = 'flex';
+            if (gmapsBtn) gmapsBtn.style.display = 'none';
+            if (nearbyBtn) nearbyBtn.style.display = 'none';
+            if (restoBtn) restoBtn.style.display = 'none';
+            if (hikeBtn) hikeBtn.style.display = 'none';
             return;
+        }
+
+        // Generate Google Maps URL
+        if (gmapsBtn && coordinates.length >= 2) {
+            const origin = `${coordinates[0][0]},${coordinates[0][1]}`;
+            const destination = `${coordinates[coordinates.length - 1][0]},${coordinates[coordinates.length - 1][1]}`;
+            let waypoints = '';
+            
+            if (coordinates.length > 2) {
+                const wpArray = coordinates.slice(1, -1).map(c => `${c[0]},${c[1]}`);
+                waypoints = `&waypoints=${wpArray.join('|')}`;
+            }
+            
+            const gmapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypoints}&travelmode=walking`;
+            gmapsBtn.href = gmapsUrl;
+            gmapsBtn.style.display = 'flex'; // show the button
+        }
+        
+        // Generate Google Maps Nearby Attractions URL
+        if (nearbyBtn && coordinates.length > 0) {
+            const cityEl = document.getElementById('city-select');
+            const cityName = cityEl ? cityEl.value : "";
+            // Standard search URL using Google Maps Intent
+            const nearbyUrl = `https://www.google.com/maps/search/?api=1&query=sites+touristiques+dans+un+rayon+de+30km+autour+de+${encodeURIComponent(cityName)}`;
+            nearbyBtn.href = nearbyUrl;
+            nearbyBtn.style.display = 'flex'; // show the button
+        }
+        
+        // Generate Google Maps High-end Restaurants URL
+        if (restoBtn && coordinates.length > 0) {
+            const cityEl = document.getElementById('city-select');
+            const cityName = cityEl ? cityEl.value : "";
+            // Standard search URL using Google Maps Intent for restaurants > 4 stars and high price level ($$$ and $$$$)
+            const restoUrl = `https://www.google.com/maps/search/?api=1&query=restaurants+gastronomiques+exceptionnels+autour+de+${encodeURIComponent(cityName)}`;
+            restoBtn.href = restoUrl;
+            restoBtn.style.display = 'flex'; // show the button
+        }
+        
+        // Generate Google Maps Easy/Medium Hikes URL
+        if (hikeBtn && coordinates.length > 0) {
+            const cityEl = document.getElementById('city-select');
+            const cityName = cityEl ? cityEl.value : "";
+            // Using "sentiers de randonnée" specifically triggers Google Maps "hiking trails" feature showing park lines and green paths
+            const hikeUrl = `https://www.google.com/maps/search/?api=1&query=sentiers+de+randonnée+autour+de+${encodeURIComponent(cityName)}`;
+            hikeBtn.href = hikeUrl;
+            hikeBtn.style.display = 'flex'; // show the button
         }
 
         // Show map
@@ -1268,6 +1522,134 @@ document.addEventListener('DOMContentLoaded', () => {
                 drawRoute(coordinates);
             } else {
                 drawRoute(null);
+            }
+        });
+    }
+
+    // --- Search Proximity Feature ---
+
+    // 1. Haversine distance formula (returns distance in km)
+    function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Radius of the earth in km
+        const dLat = deg2rad(lat2 - lat1);
+        const dLon = deg2rad(lon2 - lon1);
+        const a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = R * c; // Distance in km
+        return d;
+    }
+
+    function deg2rad(deg) {
+        return deg * (Math.PI / 180);
+    }
+
+    // 2. Proximity Search Logic
+    const btnSearchCity = document.getElementById('btn-search-city');
+    const inputCitySearch = document.getElementById('city-search');
+
+    if (btnSearchCity && inputCitySearch) {
+        btnSearchCity.addEventListener('click', async () => {
+            const query = inputCitySearch.value.trim();
+            if (!query) return;
+
+            // Optional: Set button to loading state
+            const originalIcon = btnSearchCity.innerHTML;
+            btnSearchCity.innerHTML = '<i data-lucide="loader" class="spin"></i> Recherche...';
+            lucide.createIcons();
+
+            try {
+                // Call Nominatim API
+                const url = `https://nominatim.openstreetmap.org/search?format=json&country=France&city=${encodeURIComponent(query)}`;
+                const response = await fetch(url, { headers: { 'User-Agent': 'VoyagesApp/1.0' } });
+                const data = await response.json();
+
+                if (!data || data.length === 0) {
+                    alert("Désolé, ville non trouvée en France.");
+                    btnSearchCity.innerHTML = originalIcon;
+                    return;
+                }
+
+                // Get best match coordinates
+                const searchLat = parseFloat(data[0].lat);
+                const searchLon = parseFloat(data[0].lon);
+
+                // Find closest excursion
+                let closestDist = Infinity;
+                let closestCity = null;
+                let closestRegion = null;
+                let closestExcursion = null;
+                const country = 'france'; // We restricted the geocoding to France
+
+                // Browse all France regions and cities
+                if (destData[country].cities) {
+                    for (const region in destData[country].cities) {
+                        for (const city of destData[country].cities[region]) {
+                            // Check if this city has excursions mapped
+                            if (destData[country].excursions && destData[country].excursions[city]) {
+                                const excs = destData[country].excursions[city];
+                                for (const excName in excs) {
+                                    const coords = excs[excName][0]; // Take start point
+                                    if (coords) {
+                                        const dist = getDistanceFromLatLonInKm(searchLat, searchLon, coords[0], coords[1]);
+                                        if (dist < closestDist) {
+                                            closestDist = dist;
+                                            closestCity = city;
+                                            closestRegion = region;
+                                            closestExcursion = excName;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (closestCity) {
+                    // Update selectors
+                    countrySelect.value = country;
+                    
+                    // Manually trigger change to populate regions, then select region
+                    countrySelect.dispatchEvent(new Event('change'));
+                    regionSelect.value = closestRegion;
+                    
+                    // Trigger change to populate cities, then select city
+                    regionSelect.dispatchEvent(new Event('change'));
+                    citySelect.value = closestCity;
+                    
+                    // Trigger change to populate excursions, then select excursion
+                    citySelect.dispatchEvent(new Event('change'));
+                    excursionSelect.value = closestExcursion;
+                    
+                    // Delay final drawing and alert to allow DOM rendering
+                    setTimeout(() => {
+                        excursionSelect.dispatchEvent(new Event('change'));
+                        
+                        // Small delay before alert so the map is visible First
+                        setTimeout(() => {
+                            alert(`✅ Circuit le plus proche trouvé !\n\nVille : ${closestCity}\nDistance : ~${Math.round(closestDist)} km\nCircuit sélectionné : ${closestExcursion}`);
+                        }, 500);
+                    }, 50);
+                } else {
+                    alert("Aucune excursion trouvée pour cette zone.");
+                }
+
+            } catch (error) {
+                console.error("Geocoding Error: ", error);
+                alert("Erreur lors de la recherche de la ville.");
+            } finally {
+                // Restore button state
+                btnSearchCity.innerHTML = originalIcon;
+                // Add spin css dynamically just in case for lucide
+            }
+        });
+        
+        // Allow enter key press
+        inputCitySearch.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                btnSearchCity.click();
             }
         });
     }
