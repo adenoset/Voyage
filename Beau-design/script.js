@@ -112,6 +112,78 @@ document.addEventListener('DOMContentLoaded', () => {
     const citySelect = document.getElementById('city-select');
     const excursionSelect = document.getElementById('excursion-select');
 
+    // --- Persistence Logic ---
+    function loadCustomCities() {
+        const customData = localStorage.getItem('voyages_custom_cities');
+        if (customData) {
+            try {
+                const parsed = JSON.parse(customData);
+                // Deep merge custom cities into destData
+                for (const country in parsed) {
+                    if (!destData[country]) {
+                        destData[country] = parsed[country];
+                        continue;
+                    }
+                    if (parsed[country].regions) {
+                        parsed[country].regions.forEach(r => {
+                            if (!destData[country].regions.includes(r)) {
+                                destData[country].regions.push(r);
+                            }
+                        });
+                    }
+                    if (parsed[country].cities) {
+                        for (const region in parsed[country].cities) {
+                            if (!destData[country].cities[region]) {
+                                destData[country].cities[region] = [];
+                            }
+                            parsed[country].cities[region].forEach(c => {
+                                if (!destData[country].cities[region].includes(c)) {
+                                    destData[country].cities[region].push(c);
+                                }
+                            });
+                        }
+                    }
+                    if (parsed[country].excursions) {
+                        for (const city in parsed[country].excursions) {
+                            destData[country].excursions[city] = {
+                                ...destData[country].excursions[city],
+                                ...parsed[country].excursions[city]
+                            };
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Error loading custom cities", e);
+            }
+        }
+    }
+
+    function saveCustomCity(country, region, city, lat, lon) {
+        let customData = localStorage.getItem('voyages_custom_cities');
+        let parsed = customData ? JSON.parse(customData) : {};
+
+        if (!parsed[country]) parsed[country] = { regions: [], cities: {}, excursions: {} };
+        if (!parsed[country].regions.includes(region)) parsed[country].regions.push(region);
+        if (!parsed[country].cities[region]) parsed[country].cities[region] = [];
+        if (!parsed[country].cities[region].includes(city)) parsed[country].cities[region].push(city);
+        
+        // Add a default excursion
+        if (!parsed[country].excursions[city]) {
+            parsed[country].excursions[city] = {
+                [`Découverte de ${city}`]: [
+                    [lat, lon],
+                    [lat + 0.005, lon + 0.005],
+                    [lat - 0.005, lon + 0.008]
+                ]
+            };
+        }
+
+        localStorage.setItem('voyages_custom_cities', JSON.stringify(parsed));
+    }
+
+    // Load custom cities before initializing selectors
+    loadCustomCities();
+
     // Dummy data for illustration (With coordinates)
     // Dummy data for illustration (With coordinates)
     const destData = {
@@ -120,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cities: {
                 'Île-de-France': ['Paris', 'Versailles', 'Fontainebleau', 'Provins', 'Saint-Germain-en-Laye', 'Vincennes', 'Boulogne-Billancourt', 'Rueil-Malmaison', 'Melun', 'Saint-Denis'],
                 'Provence-Alpes-Côte d\'Azur': ['Nice', 'Marseille', 'Cannes', 'Aix-en-Provence', 'Grasse', 'Avignon', 'Arles', 'Toulon', 'Antibes', 'Saint-Tropez', 'Menton', 'Cassis', 'Gordes', 'Les Baux-de-Provence'],
-                'Nouvelle-Aquitaine': ['Bordeaux', 'Biarritz', 'Saint-Émilion', 'Arcachon', 'La Rochelle', 'Pau', 'Bayonne', 'Limoges', 'Poitiers', 'Angoulême', 'Périgueux', 'Agen', 'Sarlat-la-Canéda', 'Montignac-Lascaux'],
+                'Nouvelle-Aquitaine': ['Bordeaux', 'Biarritz', 'Saint-Émilion', 'Arcachon', 'La Rochelle', 'Pau', 'Bayonne', 'Limoges', 'Poitiers', 'Angoulême', 'Périgueux', 'Agen', 'Sarlat-la-Canéda', 'Montignac-Lascaux', 'Soulac-sur-Mer'],
                 'Corrèze': ['Brive-la-Gaillarde', 'Tulle', 'Uzerche'],
                 'Auvergne-Rhône-Alpes': ['Lyon', 'Annecy', 'Chamonix', 'Grenoble', 'Clermont-Ferrand', 'Valence', 'Chambéry', 'Saint-Étienne', 'Vichy', 'Montélimar', 'Vienne', 'Bourg-en-Bresse'],
                 'Bretagne': ['Rennes', 'Saint-Malo', 'Vannes', 'Brest', 'Quimper', 'Dinard', 'Lorient', 'Saint-Brieuc', 'Concarneau', 'Carnac', 'Lannion'],
@@ -510,6 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Angoulême': { 'Capitale de la BD': [[45.6521, 0.1504], [45.6496, 0.1558], [45.6517, 0.1517]] },
                 'Périgueux': { 'Vesunna': [[45.1843, 0.7208], [45.1869, 0.7163], [45.1818, 0.7126]] },
                 'Agen': { 'Pont-Canal': [[44.2049, 0.6186], [44.2005, 0.6135], [44.1950, 0.6050]] },
+                'Soulac-sur-Mer': { 'Basilique et Plage': [[45.5126, -1.1215], [45.5050, -1.1250], [45.4950, -1.1350]] },
                 'Brive-la-Gaillarde': {
                     'Marché Georges Brassens': [
                         [45.1583, 1.5330], // Halle Georges Brassens
@@ -1561,44 +1634,72 @@ document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
 
             try {
-                // Call Nominatim API
-                const url = `https://nominatim.openstreetmap.org/search?format=json&country=France&city=${encodeURIComponent(query)}`;
+                // Call Nominatim API with addressdetails to get the region
+                const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${encodeURIComponent(query)}`;
                 const response = await fetch(url, { headers: { 'User-Agent': 'VoyagesApp/1.0' } });
                 const data = await response.json();
 
                 if (!data || data.length === 0) {
-                    alert("Désolé, ville non trouvée en France.");
+                    alert("Désolé, lieu non trouvé.");
                     btnSearchCity.innerHTML = originalIcon;
                     return;
                 }
 
-                // Get best match coordinates
-                const searchLat = parseFloat(data[0].lat);
-                const searchLon = parseFloat(data[0].lon);
+                // Filter results to prefer actual cities/towns/villages over neighborhoods/streets
+                // Nominatim uses 'addresstype' or 'type'
+                let bestMatch = data.find(item => ['city', 'town', 'village', 'municipality'].includes(item.addresstype || item.type));
+                if (!bestMatch) {
+                    // Try to find one where the query is in the name and it's some kind of place
+                    bestMatch = data.find(item => (item.addresstype || item.type) !== 'road');
+                }
+                if (!bestMatch) bestMatch = data[0];
 
-                // Find closest excursion
+                const searchLat = parseFloat(bestMatch.lat);
+                const searchLon = parseFloat(bestMatch.lon);
+                const addr = bestMatch.address;
+                
+                // Identify destination info
+                const countryCode = addr.country_code || "fr";
+                let countryKey = "france"; // default
+                if (countryCode === "it") countryKey = "italy";
+                else if (countryCode === "es") countryKey = "spain";
+                else if (countryCode === "de") countryKey = "germany";
+                else if (countryCode === "pt") countryKey = "portugal";
+                else if (countryCode === "gb") countryKey = "uk";
+                else if (countryCode === "ch") countryKey = "switzerland";
+                else if (countryCode === "gr") countryKey = "greece";
+                else if (countryCode === "us") countryKey = "usa";
+                else if (countryCode === "jp") countryKey = "japan";
+
+                // Be smart about the city name: use town/village if possible, but fallback to query if it's a neighborhood search
+                const cityName = addr.city || addr.town || addr.village || addr.municipality || query;
+                const regionName = addr.state || addr.region || addr.county || "Autre";
+
+                // Ensure country exists in destData
+                if (!destData[countryKey]) {
+                    destData[countryKey] = { regions: [], cities: {}, excursions: {} };
+                }
+
+                // Check if city already exists (proximity check)
+                let existingCity = null;
+                let existingRegion = null;
+                let existingExcursion = null;
                 let closestDist = Infinity;
-                let closestCity = null;
-                let closestRegion = null;
-                let closestExcursion = null;
-                const country = 'france'; // We restricted the geocoding to France
 
-                // Browse all France regions and cities
-                if (destData[country].cities) {
-                    for (const region in destData[country].cities) {
-                        for (const city of destData[country].cities[region]) {
-                            // Check if this city has excursions mapped
-                            if (destData[country].excursions && destData[country].excursions[city]) {
-                                const excs = destData[country].excursions[city];
-                                for (const excName in excs) {
-                                    const coords = excs[excName][0]; // Take start point
-                                    if (coords) {
-                                        const dist = getDistanceFromLatLonInKm(searchLat, searchLon, coords[0], coords[1]);
-                                        if (dist < closestDist) {
-                                            closestDist = dist;
-                                            closestCity = city;
-                                            closestRegion = region;
-                                            closestExcursion = excName;
+                for (const r in destData[countryKey].cities) {
+                    for (const c of destData[countryKey].cities[r]) {
+                        if (destData[countryKey].excursions && destData[countryKey].excursions[c]) {
+                            const excs = destData[countryKey].excursions[c];
+                            for (const excName in excs) {
+                                const coords = excs[excName][0];
+                                if (coords) {
+                                    const dist = getDistanceFromLatLonInKm(searchLat, searchLon, coords[0], coords[1]);
+                                    if (dist < closestDist) {
+                                        closestDist = dist;
+                                        if (dist < 5) { // If less than 5km, it's basically the same city
+                                            existingCity = c;
+                                            existingRegion = r;
+                                            existingExcursion = excName;
                                         }
                                     }
                                 }
@@ -1607,34 +1708,63 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                if (closestCity) {
-                    // Update selectors
-                    countrySelect.value = country;
-                    
-                    // Manually trigger change to populate regions, then select region
-                    countrySelect.dispatchEvent(new Event('change'));
-                    regionSelect.value = closestRegion;
-                    
-                    // Trigger change to populate cities, then select city
-                    regionSelect.dispatchEvent(new Event('change'));
-                    citySelect.value = closestCity;
-                    
-                    // Trigger change to populate excursions, then select excursion
-                    citySelect.dispatchEvent(new Event('change'));
-                    excursionSelect.value = closestExcursion;
-                    
-                    // Delay final drawing and alert to allow DOM rendering
-                    setTimeout(() => {
-                        excursionSelect.dispatchEvent(new Event('change'));
-                        
-                        // Small delay before alert so the map is visible First
-                        setTimeout(() => {
-                            alert(`✅ Circuit le plus proche trouvé !\n\nVille : ${closestCity}\nDistance : ~${Math.round(closestDist)} km\nCircuit sélectionné : ${closestExcursion}`);
-                        }, 500);
-                    }, 50);
+                let finalCity, finalRegion, finalExcursion;
+
+                if (existingCity) {
+                    finalCity = existingCity;
+                    finalRegion = existingRegion;
+                    finalExcursion = existingExcursion;
                 } else {
-                    alert("Aucune excursion trouvée pour cette zone.");
+                    // NEW CITY! Add it dynamically
+                    finalCity = cityName;
+                    finalRegion = regionName;
+                    
+                    if (!destData[countryKey].regions.includes(finalRegion)) {
+                        destData[countryKey].regions.push(finalRegion);
+                    }
+                    if (!destData[countryKey].cities[finalRegion]) {
+                        destData[countryKey].cities[finalRegion] = [];
+                    }
+                    if (!destData[countryKey].cities[finalRegion].includes(finalCity)) {
+                        destData[countryKey].cities[finalRegion].push(finalCity);
+                    }
+
+                    // Create default excursion
+                    finalExcursion = `Découverte de ${finalCity}`;
+                    if (!destData[countryKey].excursions) destData[countryKey].excursions = {};
+                    destData[countryKey].excursions[finalCity] = {
+                        [finalExcursion]: [
+                            [searchLat, searchLon],
+                            [searchLat + 0.005, searchLon + 0.005],
+                            [searchLat - 0.005, searchLon + 0.008]
+                        ]
+                    };
+
+                    // Save to persistent storage
+                    saveCustomCity(countryKey, finalRegion, finalCity, searchLat, searchLon);
+                    
+                    alert(`✨ Nouvelle ville ajoutée : ${finalCity} (${finalRegion})\nElle a été mémorisée dans votre navigateur.`);
                 }
+
+                // Update selectors and UI
+                countrySelect.value = countryKey;
+                countrySelect.dispatchEvent(new Event('change'));
+                
+                regionSelect.value = finalRegion;
+                regionSelect.dispatchEvent(new Event('change'));
+                
+                citySelect.value = finalCity;
+                citySelect.dispatchEvent(new Event('change'));
+                
+                excursionSelect.value = finalExcursion;
+                
+                // Delay final drawing to allow DOM rendering
+                setTimeout(() => {
+                    excursionSelect.dispatchEvent(new Event('change'));
+                    if (existingCity) {
+                        alert(`✅ Lieu trouvé !\n\nVille : ${finalCity}\nCircuit sélectionné : ${finalExcursion}`);
+                    }
+                }, 100);
 
             } catch (error) {
                 console.error("Geocoding Error: ", error);

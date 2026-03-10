@@ -347,6 +347,42 @@
           "next_leg": null
         }
       ]
+    },
+    {
+      "city_id": "soulac_01",
+      "city_name": "Soulac-sur-Mer",
+      "description": "Découverte de la station balnéaire du Médoc, de sa basilique romane ensablée aux villas Belle Époque, jusqu'aux immenses plages de l'Atlantique.",
+      "transport_mode": "pedestrian",
+      "total_distance_km": 3.0,
+      "total_duration_minutes": 60,
+      "waypoints": [
+        {
+          "order": 1,
+          "name": "Basilique Notre-Dame-de-la-Fin-des-Terres",
+          "coordinates": {"lat": 45.5126, "lng": -1.1215},
+          "next_leg": {
+            "distance_km": 1.0,
+            "duration_minutes": 15,
+            "transport": "walking"
+          }
+        },
+        {
+          "order": 2,
+          "name": "Villas Belle Époque",
+          "coordinates": {"lat": 45.5050, "lng": -1.1250},
+          "next_leg": {
+            "distance_km": 2.0,
+            "duration_minutes": 30,
+            "transport": "walking"
+          }
+        },
+        {
+          "order": 3,
+          "name": "Plage Centrale et l'Océan",
+          "coordinates": {"lat": 45.4950, "lng": -1.1350},
+          "next_leg": null
+        }
+      ]
     }
   ]
 }
